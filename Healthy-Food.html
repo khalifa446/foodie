@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>الأكلات المصرية</title>
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+        background-color: #f0f0f0;
+        color: #1a1a1a;
+    }
+
+    header{
+        background-color: #f0f0f0;
+        color: #001f3f;
+        padding: 2rem;
+        padding-top: 5%;
+        animation: fadeDown 1s ease-out;
+        position: relative;
+        text-align: center;
+    }
+
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.logo-container img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+.logo-container img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* تعديل CSS للـ logo popup */
+#logo-popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 248, 240, 0.9); /* خلفية فاتحة */
+  justify-content: center;
+  align-items: center;
+  z-index: 100000; /* اعلى من أي fullscreen overlay */
+}
+
+#logo-popup img {
+  max-width: 80%;
+  max-height: 80%;
+  border-radius: 50%;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+  animation: zoomIn 0.4s ease;
+}
+
+@keyframes zoomIn {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+    section {
+        padding: 2rem;
+        background-color:white;
+        margin: 1rem auto;
+        max-width: 1000px;
+        border-radius: 8px;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeUp 0.8s ease forwards;
+        animation-delay: 0.3s;
+        display: flex;
+        flex-direction: row;
+        gap: 1.5rem;
+        align-items: flex-start;
+    }
+
+    h2{
+        color: #004080;
+        margin-top: 0;
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #1a2a6c;
+        padding-bottom: 0.5rem;
+    }
+
+    p{
+        line-height: 1.6;
+        text-align: justify;
+    }
+
+    .section-text {
+        flex: 2;
+    }
+
+    .section-image {
+        flex: 1;
+    }
+
+    .section-image img {
+        width: 100%;
+        border-radius: 8px;
+    }
+
+    .section-card {
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+    .section-card:hover {
+        transform: scale(1.02);
+    }
+
+    /* Fullscreen overlay */
+    .fullscreen-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.95);
+        z-index: 9999;
+        overflow-y: auto;
+        padding: 2rem;
+        box-sizing: border-box;
+    }
+
+    .fullscreen-overlay.active {
+        display: block;
+    }
+
+    .fullscreen-content {
+        display: flex;
+        flex-direction: row;
+        max-width: 1400px;
+        margin: auto;
+        background-color: white;
+        color: #1a1a1a;
+        padding: 2rem;
+        border-radius: 12px;
+        gap: 2rem;
+    }
+
+    .fullscreen-text {
+        flex: 2;
+        overflow-y: auto;
+    }
+
+    .fullscreen-text p {
+        margin-bottom: 1rem;
+        line-height: 1.7;
+    }
+
+    .fullscreen-image {
+        flex: 1;
+    }
+
+    .fullscreen-image img {
+        width: 100%;
+        border-radius: 8px;
+    }
+
+    .close-btn {
+        display: block;
+        text-align: right;
+        font-size: 2rem;
+        cursor: pointer;
+        margin-bottom: 1rem;
+    }
+
+    @keyframes fadeUp {
+        0% { opacity: 0; transform: translateY(30px); }
+        100%{ opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeDown{
+        0%{ opacity: 0; transform: translateY(-30px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+
+    body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    url('https://cdn-icons-png.flaticon.com/512/857/857681.png'),   /* شوكة وسكين */
+    url('https://cdn-icons-png.flaticon.com/512/857/857681.png'),
+    url('https://cdn-icons-png.flaticon.com/512/857/857681.png'),
+    url('https://cdn-icons-png.flaticon.com/512/706/706195.png'),   /* قدر / طاجن */
+    url('https://cdn-icons-png.flaticon.com/512/706/706195.png'),
+    url('https://cdn-icons-png.flaticon.com/512/1046/1046857.png'), /* مقلاة */
+    url('https://cdn-icons-png.flaticon.com/512/1046/1046857.png'),
+    url('https://cdn-icons-png.flaticon.com/512/3208/3208666.png'), /* ملعقة خشب */
+    url('https://cdn-icons-png.flaticon.com/512/3208/3208666.png'),
+    url('https://cdn-icons-png.flaticon.com/512/1046/1046879.png'), /* إبريق شاي */
+    url('https://cdn-icons-png.flaticon.com/512/1046/1046879.png'),
+    url('https://cdn-icons-png.flaticon.com/512/1046/1046866.png'); /* سكين مطبخ */
+
+  background-repeat: no-repeat;
+  background-size: 60px 60px;
+
+  /* توزيع الأيقونات في أماكن منفصلة */
+  background-position:
+    5% 10%, 25% 20%, 45% 30%,
+    65% 15%, 85% 25%, 10% 60%,
+    30% 70%, 50% 80%, 70% 60%,
+    90% 75%, 40% 90%, 80% 90%;
+  
+  opacity: 0.08;
+  z-index: -1;
+  pointer-events: none;
+  animation: slowFloat 60s linear infinite alternate;
+}
+</style>    
+</head>
+<body>
+
+<header>
+    <div class="logo-container">
+        <img src="https://i.postimg.cc/NGmkfJnb/healthy-food-removebg-preview.png" alt="شعار الموقع"   onclick="showLogoPopup()">
+    </div>
+    <div class="caption">أكلات مصرية تقليدية الصحية</div>
+</header>
+
+<section class="intro">
+    <div class="section-text">
+        <h2>عالم الأكلات المصرية</h2>
+        <p>المطبخ المصري من أقدم وأغنى المطابخ في الشرق الأوسط، وبيتميز بتنوع رهيب يخليه مناسب لكل المستويات — من الفلاح البسيط في الريف لحد أفخم مطاعم القاهرة. الأكل المصري فيه لمحة من الأصالة: مكونات طبيعية، توابل خفيفة، واعتماد كبير على البقوليات والخضار. أغلب الأكلات المشهورة زَي الفول، الطعمية، الكشري، الملوخية، المحشي، وشوربة العدس، بتتجمع في نقطة واحدة — إنها مشبعة ومغذية ومليانة ألياف وبروتين رغم بساطتها.
+الميزة الأجمل إن الأكلات دي ممكن تتقدّم بشكل شعبي تقليدي أو تتعمل بطريقة حديثة صحية (قليل زيت، شوي بدل قلي، رز بني بدل أبيض). وده بيخليها مرنة ومناسبة لكل الأذواق والأعمار.
+يعني ببساطة، الأكل المصري يقدر يكون شهي وصحي في نفس الوقت — بس لو اتعمل بذكاء</p>
+    </div>
+</section>
+
+
+<section class="section-card" onclick="openHealthy('foul')">
+    <div class="section-text">
+        <h2>فول مصري</h2>
+        <p>المطبخ المصري من أقدم وأغنى المطابخ في الشرق الأوسط، وبيتميز بتنوع رهيب يخليه مناسب لكل المستويات — من الفلاح البسيط في الريف لحد أفخم مطاعم القاهرة. الأكل المصري فيه لمحة من الأصالة: مكونات طبيعية، توابل خفيفة، واعتماد كبير على البقوليات والخضار. أغلب الأكلات المشهورة زَي الفول، الطعمية، الكشري، الملوخية، المحشي، وشوربة العدس، بتتجمع في نقطة واحدة — إنها مشبعة ومغذية ومليانة ألياف وبروتين رغم بساطتها.
+
+الميزة الأجمل إن الأكلات دي ممكن تتقدّم بشكل شعبي تقليدي أو تتعمل بطريقة حديثة صحية (قليل زيت، شوي بدل قلي، رز بني بدل أبيض). وده بيخليها مرنة ومناسبة لكل الأذواق والأعمار.
+يعني ببساطة، الأكل المصري يقدر يكون شهي وصحي في نفس الوقت — بس لو اتعمل بذكاء</p>
+    </div>
+    <div class="section-image">
+        <img src="https://i.postimg.cc/6p3ZRYH2/alfwl-almsry.jpg" alt="فول مصري">
+    </div>
+</section>
+
+<section class="section-card" onclick="openHealthy('koshary')">
+    <div class="section-text">
+        <h2>كشري</h2>
+        <p>الكشري هو أكلة المصريين الرسمية — مزيج عبقري من أرز وعدس ومكرونة وبصل وصلصة. أكلة شعبية، اقتصادية، ومليانة عناصر غذائية متنوعة. العدس والحمص بيضيفوا بروتين وألياف، والمكرونة والرز بيدّوا طاقة، وده بيخليه وجبة متوازنة جدًا لو اتظبطت الكميات.</p>
+    </div>
+    <div class="section-image">
+        <img src="https://i.postimg.cc/W1CdZjFS/kshry.jpg" alt="كشري">
+    </div>
+</section>
+
+<section class="section-card" onclick="openHealthy('taamia')">
+    <div class="section-text">
+        <h2>طعمية</h2>
+        <p>الطعمية من أشهر أكلات الشارع المصري، وغالبًا بتتقدّم جنب الفول في الفطار. هي مزيج من فول مدشوش وخضرة (كزبرة، شبت، بقدونس)، وبتتحمّر لحد ما تبقى مقرمشة من بره وطريّة من جوّه. رغم إنها بتتقلي، إلا إنها ممكن تتعمل بطريقة صحية جدًا لو اتشوَت أو اتقلّت بزيت نظيف. فيها بروتين نباتي عالي، وألياف كتير، وفيتامينات من الخضرة.</p>
+    </div>
+    <div class="section-image">
+        <img src="https://i.postimg.cc/bNYScmfn/tʿmyt.jpg" alt="طعمية">
+    </div>
+</section>
+
+
+<div id="fullscreen" class="fullscreen-overlay">
+    <div class="fullscreen-content">
+        <span class="close-btn" onclick="closeHealthy()"> ×</span>
+        <div class="fullscreen-text">
+            <h2 id="healthy-title"></h2>
+            <p id="healthy-description"></p>
+        </div>
+        <div class="fullscreen-image">
+            <img id="healthy-image" src="" alt="صورة الوصفة">
+        </div>
+    </div>
+</div>
+
+<script>
+    const Healthy = {
+      foul: {
+        title: 'الفول المصري',
+        image: 'https://i.postimg.cc/6p3ZRYH2/alfwl-almsry.jpg',
+        description: `
+        <p>من أول ما تصحى الصبح وتشم ريحة الفول، بتحس إن اليوم بدأ رسميًا. صوت “الدمّاسة” وهي بتفور، والريحة اللي طالعة منها، والأصوات في الشارع “سخن يا فول” — كل ده جزء من المشهد المصري اليومي. الفول بيجمع الناس؛ الغني والفقير بيأكلوه بنفس الرضا. طبق فول بالكمون واللمون على عيش بلدي طري هو وجبة فيها كل معاني الدفا.
+وسحر الفول إنه متنوع جدًا — ممكن يتعمل بالطحينة، بالطماطم، بالبصل، أو حتى بالبيض. في ناس تحبه مهروس، وناس تسيبه حبّات سليمة. ولو اتعمل بزيت صحي واتقدم مع خضار، يبقى أكلة متكاملة فيها طاقة ومغذيات وألياف بدون دهون زايدة.</p>
+
+<h3>: ملخص المكونات الرئيسية</h3>
+<ul>
+  <li>فول مدمّس (منقوع ومطبوخ ببطء)</li>
+  <li>كمّون وملح</li>
+  <li>زيت نباتي أو زيت زيتون</li>
+  <li>ليمون</li>
+  <li>بصل أو طماطم (اختياري)</li>
+  <li>طحنية أو بيض (للتقديم حسب الذوق)</li>
+</ul>
+
+<h3> ملخص خطوات التحضير</h3>
+<ol>
+  <li>نقع الفول من الليلة السابقة.</li>
+  <li>تسويته في “دمّاسة” أو حلة ضغط ببطء لحد ما يلين.</li>
+  <li>تتبيله بالملح، الكمّون، الزيت، والليمون.</li>
+  <li>تقديمه مع إضافات زي الطماطم أو الطحينة أو البيض.</li>
+</ol>
+
+<h3>: ملخص الفوائد</h3>
+<ul>
+  <li>غني بالبروتين النباتي.</li>
+  <li>يحتوي على ألياف تساعد الهضم.</li>
+  <li>يثبّت مستوى السكر في الدم.</li>
+  <li>يقلل الشعور بالجوع لفترة طويلة.</li>
+  <li>مفيد لصحة القلب والأوعية الدموية.</li>
+</ul>
+
+<h3>: نقاط الاختلاف في التحضير</h3>
+<ul>
+  <li>بعض المحافظات تضيف طماطم مبشورة وبصل.</li>
+  <li>في القاهرة غالبًا يتعمل بزيت خفيف وليمون.</li>
+  <li>في الصعيد ممكن يتدمّس مع البصل والكمّون من البداية.</li>
+  <li>البعض بيضيف بيض أو طحنية للتقديم.</li>
+</ul>
+
+
+     
+        `
+      },
+    
+      koshary: {
+        title: 'كشري مصري',
+        image: 'https://i.postimg.cc/W1CdZjFS/kshry.jpg',
+        description: `
+        <p>لو عايز تشوف مصر كلها في طبق واحد، شوف طبق كشري. صوت المكرونة وهي بتتحمّر، رشة البصل المقرمش اللي بتديك إحساس بالنصر بعد يوم طويل، الصوص الأحمر اللي بيحرق القلب شوية ويفوّق الدماغ — كل ده جزء من الطقس. الكشري بيجمع بين النقيض: طماطم حارة، عدس غامق، بصل مقرمش، وريحة خلّ لاذعة. الناس بتختلف فيه: في واحد يحبه حار، والتاني خفيف، لكن مفيش مصري مابيحبش الكشري. والأجمل إن الكشري ممكن يتعمل “دايت” بسهولة جدًا لو قللنا الزيت والمكرونة.</P>
+
+        <h3>ملخص المكونات الرئيسية</h3>
+<ul>
+  <li>أرز أبيض أو بني</li>
+  <li>عدس بجبة</li>
+  <li>مكرونة</li>
+  <li>حمص مسلوق</li>
+  <li>بصل مقلي</li>
+  <li>صوص طماطم بالثوم والخلّ</li>
+</ul>
+
+<h3>ملخص خطوات التحضير</h3>
+<ol>
+  <li>سلق العدس والمكرونة والحمص كل على حدة.</li>
+  <li>طبخ الأرز وتتبيله بالملح والكمون.</li>
+  <li>تحضير الصوص: طماطم + ثوم + خلّ.</li>
+  <li>تجهيز بصل مقرمش مقلي.</li>
+  <li>تجميع الطبق في طبقات: أرز – عدس – مكرونة – حمص – صوص – بصل.</li>
+</ol>
+
+<h3>ملخص الفوائد</h3>
+<ul>
+  <li>يحتوي على بروتين نباتي من العدس والحمص.</li>
+  <li>غني بالألياف.</li>
+  <li>مصدر ممتاز للطاقة.</li>
+  <li>ممكن يتحول لوجبة متوازنة وصحية بتقليل الزيت.</li>
+</ul>
+
+<h3>نقاط الاختلاف في التحضير</h3>
+<ul>
+  <li>في بعض البيوت: رز بني بدل الأبيض.</li>
+  <li>ناس بتزود صوص الخل والثوم.</li>
+  <li>اختلاف في درجة الشطة.</li>
+  <li>في بعض المطاعم بيضيفوا عدس أكتر أو مكرونة أقل.</li>
+</ul>
+
+        `
+      },
+    
+      taamia: {
+        title: 'طعمية',
+        image: 'https://i.postimg.cc/bNYScmfn/tʿmyt.jpg',
+        description: `
+        <p>ريحة الطعمية وهي بتتحمّر في الزيت الصبح كفيلة تصحي أي حد نايم. ده طعم بيت ورسالة حب بسيطة من المطبخ المصري. الكزبرة والشبت بيعملوا نكهة خرافية، والفول المدشوش بيخليها مشبعة ولها قوام مميز. اللي حلو كمان إن كل منطقة ليها طريقتها: في القاهرة بالفول، في إسكندرية بالفول والحمص، وفي بيوت كتير دلوقتي بيتعمل منها “طعمية بالفرن” للناس اللي بتحافظ على صحتها.
+ساندوتش طعمية سخن، عليه طحينة وخيار وطماطم، هو صباح مصري أصيل مش ممكن يتكرر</p>
+
+<h3>ملخص المكونات الرئيسية</h3>
+<ul>
+  <li>فول مدشوش منقوع</li>
+  <li>كزبرة، شبت، بقدونس</li>
+  <li>بصل وثوم</li>
+  <li>كمون وملح</li>
+  <li>بيكنج صودا (اختياري للنفش)</li>
+  <li>زيت للقلي أو رشة زيت للشوي</li>
+</ul>
+
+<h3>ملخص خطوات التحضير</h3>
+<ol>
+  <li>ينقع الفول المدشوش 6–8 ساعات.</li>
+  <li>يُفرم مع الخضرة والبصل والثوم.</li>
+  <li>يُتبل بالملح والكمون ويُترك يرتاح.</li>
+  <li>يُشكل أقراص ويُقلى أو يُشوى حتى يتحمّر.</li>
+</ol>
+
+<h3>ملخص الفوائد</h3>
+<ul>
+  <li>غني بالبروتين النباتي والألياف.</li>
+  <li>يحتوي على فيتامينات من الخضار الورقية.</li>
+  <li>يساعد على الشعور بالشبع لفترة طويلة.</li>
+  <li>مصدر طاقة صحي إذا تم شويه بدل القلي.</li>
+</ul>
+
+<h3>نقاط الاختلاف في التحضير</h3>
+<ul>
+  <li>في القاهرة: فول فقط.</li>
+  <li>في إسكندرية: فول و حمص.</li>
+  <li>ناس بتحبها صغيرة ومقرمشة، وناس كبيرة وطرية.</li>
+  <li>حالياً فيه نسخ “طعمية في الفرن” أو بالمقلاة الهوائية (Air Fryer).</li>
+</ul>
+
+          
+        `
+      }
+    };
+    
+    function openHealthy(name) {
+  const healthy = Healthy[name];
+  document.getElementById('healthy-title').textContent = healthy.title;
+  document.getElementById('healthy-image').src = healthy.image;
+  document.getElementById('healthy-description').innerHTML = healthy.description;
+  document.getElementById('fullscreen').classList.add('active');
+}
+
+function closeHealthy() {
+  document.getElementById('fullscreen').classList.remove('active');
+}
+
+
+const fullscreen = document.createElement('div');
+fullscreen.id = 'fullscreen';
+fullscreen.innerHTML = `
+  <div id="fullscreen-content">
+    <div id="fullscreen-close" onclick="closeHealthy()">&#8592;</div>
+    <h1 id="healthy-title"></h1>
+    <img id="healthy-image" />
+    <div id="healthy-description"></div>
+  </div>
+`;
+document.body.appendChild(fullscreen);
+
+
+const style = document.createElement('style');
+style.textContent = `
+#fullscreen {
+  display:none;
+  position:fixed;
+  top:0; left:0;
+  width:100vw;
+  height:100vh;
+  background:#fff;
+  z-index:9999;
+  overflow-y:auto;
+}
+#fullscreen.active { display:block; }
+#fullscreen-content{
+  max-width:900px;
+  margin:20px auto;
+  padding:20px;
+}
+#fullscreen-close{
+  position:fixed;
+  top:10px;
+  left:10px;
+  font-size:30px;
+  cursor:pointer;
+  z-index:10000;
+}
+`;
+document.head.appendChild(style);    </script>
+   <div id="logo-popup" onclick="hideLogoPopup()">
+  <img src="https://i.postimg.cc/NGmkfJnb/healthy-food-removebg-preview.png" alt="Logo Popup">
+</div>
+
+<script>
+
+function showLogoPopup() {
+  document.getElementById('logo-popup').style.display = 'flex';
+}
+
+function hideLogoPopup() {
+  document.getElementById('logo-popup').style.display = 'none';
+}
+</script>
+</body>
+</html>
+

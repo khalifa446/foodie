@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>الأكلات المصرية</title>
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+        background-color: #f0f0f0;
+        color: #1a1a1a;
+    }
+
+    header{
+        color: #001f3f;
+        padding: 2rem;
+        padding-top: 5%;
+        animation: fadeDown 1s ease-out;
+        position: relative;
+        text-align: center;
+    }
+
+
+ .logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.logo-container img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+.logo-container img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+
+#logo-popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 248, 240, 0.9); 
+  justify-content: center;
+  align-items: center;
+  z-index: 100000; 
+}
+
+#logo-popup img {
+  max-width: 80%;
+  max-height: 80%;
+  border-radius: 50%;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+  animation: zoomIn 0.4s ease;
+}
+
+@keyframes zoomIn {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+
+    section {
+        padding: 2rem;
+        background-color:white;
+        margin: 1rem auto;
+        max-width: 1000px;
+        border-radius: 8px;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeUp 0.8s ease forwards;
+        animation-delay: 0.3s;
+        display: flex;
+        flex-direction: row;
+        gap: 1.5rem;
+        align-items: flex-start;
+    }
+
+    h2{
+        color: #004080;
+        margin-top: 0;
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #1a2a6c;
+        padding-bottom: 0.5rem;
+    }
+
+    p{
+        line-height: 1.6;
+        text-align: justify;
+    }
+
+    .section-text {
+        flex: 2;
+    }
+
+    .section-image {
+        flex: 1;
+    }
+
+    .section-image img {
+        width: 100%;
+        border-radius: 8px;
+    }
+
+    .section-card {
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+    .section-card:hover {
+        transform: scale(1.02);
+    }
+
+
+    .fullscreen-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.95);
+        z-index: 9999;
+        overflow-y: auto;
+        padding: 2rem;
+        box-sizing: border-box;
+    }
+
+    .fullscreen-overlay.active {
+        display: block;
+    }
+
+    .fullscreen-content {
+        display: flex;
+        flex-direction: row;
+        max-width: 1400px;
+        margin: auto;
+        background-color: white;
+        color: #1a1a1a;
+        padding: 2rem;
+        border-radius: 12px;
+        gap: 2rem;
+    }
+
+    .fullscreen-text {
+        flex: 2;
+        overflow-y: auto;
+    }
+
+    .fullscreen-text p {
+        margin-bottom: 1rem;
+        line-height: 1.7;
+    }
+
+    .fullscreen-image {
+        flex: 1;
+    }
+
+    .fullscreen-image img {
+        width: 100%;
+        border-radius: 8px;
+    }
+
+    .close-btn {
+        display: block;
+        text-align: right;
+        font-size: 2rem;
+        cursor: pointer;
+        margin-bottom: 1rem;
+    }
+
+    @keyframes fadeUp {
+        0% { opacity: 0; transform: translateY(30px); }
+        100%{ opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeDown{
+        0%{ opacity: 0; transform: translateY(-30px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+
+   body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    url('https://cdn-icons-png.flaticon.com/512/857/857681.png'),   /* شوكة وسكين */
+    url('https://cdn-icons-png.flaticon.com/512/857/857681.png'),
+    url('https://cdn-icons-png.flaticon.com/512/857/857681.png'),
+    url('https://cdn-icons-png.flaticon.com/512/706/706195.png'),   /* قدر / طاجن */
+    url('https://cdn-icons-png.flaticon.com/512/706/706195.png'),
+    url('https://cdn-icons-png.flaticon.com/512/1046/1046857.png'), /* مقلاة */
+    url('https://cdn-icons-png.flaticon.com/512/1046/1046857.png'),
+    url('https://cdn-icons-png.flaticon.com/512/3208/3208666.png'), /* ملعقة خشب */
+    url('https://cdn-icons-png.flaticon.com/512/3208/3208666.png'),
+    url('https://cdn-icons-png.flaticon.com/512/1046/1046879.png'), /* إبريق شاي */
+    url('https://cdn-icons-png.flaticon.com/512/1046/1046879.png'),
+    url('https://cdn-icons-png.flaticon.com/512/1046/1046866.png'); /* سكين مطبخ */
+
+  background-repeat: repeat-y;
+  background-size: 60px 60px;
+
+  /* توزيع الأيقونات في أماكن منفصلة */
+  background-position:
+    5% 10%, 25% 20%, 45% 30%,
+    65% 15%, 85% 25%, 10% 60%,
+    30% 70%, 50% 80%, 70% 60%,
+    90% 75%, 40% 90%, 80% 90%;
+  
+  opacity: 0.08;
+  z-index: -1;
+  pointer-events: none;
+  animation: slowFloat 60s linear infinite alternate;
+}
+
+</style>    
+</head>
+<body>
+
+<header>
+    <div class="logo-container">
+        <img src="https://i.postimg.cc/rFdcr418/Egyptian-recipes.png" alt="شعار الموقع"   onclick="showLogoPopup()">
+    </div>
+    <div class="caption">أكلات مصرية تقليدية ووصفات مميزة</div>
+</header>
+
+<section class="intro">
+    <div class="section-text">
+        <h2>عالم الأكلات المصرية</h2>
+        <p>تعرف على وصفاتنا المصرية التقليدية الشهية، من الفول والكشري إلى الملوخية والكبدة والطعمية. كل وصفة مشروحة بخطوات سهلة مع صور المكونات ونصائح التحضير، لتتمكن من تجربة الطعم المصري الأصيل في منزلك.</p>
+    </div>
+</section>
+
+
+<section class="section-card" onclick="openRecipe('foul')">
+    <div class="section-text">
+        <h2>فول مصري</h2>
+        <p>الفول المصري هو من أشهر الأكلات الشعبية في مصر. يقدم عادة على الإفطار، ويمكن تحضيره مسلوقًا مع زيت الزيتون والكمون، أو مع الطحينة والثوم، أو مع الليمون. يمكن إضافة البصل والطماطم حسب الذوق. تختلف الطرق من محافظة لأخرى، ويتميز بالقيمة الغذائية العالية كونه مصدر للبروتين والألياف. يقدم أحيانًا مع البيض أو الجبن لتصبح وجبة متكاملة.</p>
+    </div>
+    <div class="section-image">
+        <img src="https://i.postimg.cc/6p3ZRYH2/alfwl-almsry.jpg" alt="فول مصري">
+    </div>
+</section>
+
+<section class="section-card" onclick="openRecipe('koshary')">
+    <div class="section-text">
+        <h2>كشري</h2>
+        <p>الكشري المصري هو الطبق الوطني ويتميز بتنوع مكوناته: أرز، عدس، مكرونة، حمص، وصلصة طماطم حارة، ويزين بالبصل المقلي. طرق التحضير مختلفة من مطبخ لآخر، بعض الناس يحبون إضافة الخل أو الثوم، وبعضهم يغير نسب المكونات. الكشري وجبة متكاملة ومغذية، وشهية جدًا، ويقدم كوجبة رئيسية في الغداء.</p>
+    </div>
+    <div class="section-image">
+        <img src="https://i.postimg.cc/W1CdZjFS/kshry.jpg" alt="كشري">
+    </div>
+</section>
+
+<section class="section-card" onclick="openRecipe('molokhia')">
+    <div class="section-text">
+        <h2>ملوخية</h2>
+        <p>الملوخية من الأكلات المصرية التقليدية المحبوبة. تصنع من أوراق الملوخية المفرومة وتطبخ مع مرقة الدجاج أو اللحم والثوم والكزبرة. يمكن تقديمها مع الأرز أو الخبز. تختلف طرق تحضير الملوخية بين المحافظات، بعض الناس يحبونها كثيفة، والبعض الآخر سائلة. الطعم الأخضر الطازج مع الثوم والكزبرة يعطيها نكهة لا تقاوم.</p>
+    </div>
+    <div class="section-image">
+        <img src="https://i.postimg.cc/jdNx1NLw/almlwkhyt.jpg" alt="ملوخية">
+    </div>
+</section>
+
+<section class="section-card" onclick="openRecipe('kebda')">
+    <div class="section-text">
+        <h2>كبدة إسكندراني</h2>
+        <p>الكبدة الإسكندراني من أشهر الأكلات الشعبية في مصر، تُطهى مع الثوم والفلفل الحار والبهارات. تختلف الطرق بين المطاعم والمحلات، بعضهم يضيف صلصة حارة أو الطماطم. تُقدم ساخنة مع الخبز البلدي، وتعتبر وجبة سريعة وشهية لمحبي الأكلات الغنية بالنكهة.</p>
+    </div>
+    <div class="section-image">
+        <img src="https://i.postimg.cc/Jh7Rt2Ky/alkbdt-alaskndrany.jpg" alt="كبدة إسكندراني">
+    </div>
+</section>
+
+<section class="section-card" onclick="openRecipe('taamia')">
+    <div class="section-text">
+        <h2>طعمية</h2>
+        <p>الطعمية المصرية تصنع من الفول المدشوش والبهارات والأعشاب الطازجة، وتقلى حتى تصبح ذهبية. تختلف طرق التحضير من منطقة لأخرى، البعض يضيف البقدونس والثوم والبصل لإضفاء نكهة خاصة، والبعض الآخر يركز على الكمون والكزبرة. الطعمية تعتبر وجبة فطور خفيفة ومغذية، وتقدم مع الطحينة أو الخبز البلدي.</p>
+    </div>
+    <div class="section-image">
+        <img src="https://i.postimg.cc/bNYScmfn/tʿmyt.jpg" alt="طعمية">
+    </div>
+</section>
+
+
+<div id="fullscreen" class="fullscreen-overlay">
+    <div class="fullscreen-content">
+        <span class="close-btn" onclick="closeRecipe()">×</span>
+        <div class="fullscreen-text">
+            <h2 id="recipe-title"></h2>
+            <p id="recipe-description"></p>
+        </div>
+        <div class="fullscreen-image">
+            <img id="recipe-image" src="" alt="صورة الوصفة">
+        </div>
+    </div>
+</div>
+
+<script>
+    const recipes = {
+      foul: {
+        title: 'فول مصري',
+        image: 'https://i.postimg.cc/6p3ZRYH2/alfwl-almsry.jpg',
+        description: `
+          <p>
+            الفول المصري أكلة بتعكس مصر من أولها لآخرها، أي حد في أي حي عنده نسخته الخاصة.
+            الفول المدشوش العادي بيتعمل غالبًا على الفطار، طري ومتكامل، وغالبًا بيتقدم مع ثوم، عصير ليمون، وزيت زيتون.
+            أما الفول الإسكندراني فبيتميز بالطماطم والبصل والفلفل الحار، وطريقة التحمير بتدي نكهة أقوى.
+            في الصعيد بيحبوه خفيف البهارات، بينما في القاهرة بعض الناس بيضيفوا له طحينة.
+          </p>
+    
+          <h3>تلخيص الاختلافات:</h3>
+          <ul>
+            <li><strong>الفول المدشوش:</strong> طري، مع طحينة وثوم وليمون.</li>
+            <li><strong>الفول الإسكندراني:</strong> مع الطماطم والبصل والفلفل الحار، مهروس جزئيًا أحيانًا.</li>
+            <li><strong>الفول الصعيدي:</strong> خفيف البهارات، ملح وكمون وبقدونس.</li>
+            <li><strong>فول الشارع:</strong> سريع مع شطة وليمون، غالبًا طعمه حاد.</li>
+          </ul>
+    
+          <h3>أهم خطوات التحضير:</h3>
+          <ul>
+            <li>نقع الفول ليلة كاملة لتسهيل السلق.</li>
+            <li>سلق الفول على نار هادئة للحفاظ على القوام.</li>
+            <li>إضافة الطحينة أو الصلصة أو الشطة حسب الطريقة.</li>
+          </ul>
+    
+          <h3>أهم المكونات:</h3>
+          <ul>
+            <li>فول</li>
+            <li>طحينة (اختياري)</li>
+            <li>ثوم</li>
+            <li>ليمون</li>
+            <li>زيت زيتون</li>
+            <li>طماطم، بصل، فلفل حسب النسخة</li>
+          </ul>
+        `
+      },
+    
+      koshary: {
+        title: 'كشري مصري',
+        image: 'https://i.postimg.cc/W1CdZjFS/kshry.jpg',
+        description: `
+          <p>
+            الكشري هو أكلة بتوصف روح مصر كلها: مزيج من أرز وعدس ومكرونة، مع الحمص والبصل المقلي.
+            كل منطقة عندها لمستها الخاصة: في القاهرة الصلصة حمراء وحارة، في الإسكندرية يستخدموا العدس الأحمر،
+            وفي الصعيد الصلصة أخف والبصل مقرمش أكثر.
+          </p>
+    
+          <h3>تلخيص الاختلافات:</h3>
+          <ul>
+            <li><strong>العدس:</strong> بني في القاهرة، أحمر في الإسكندرية.</li>
+            <li><strong>الصلصة:</strong> حارة في القاهرة، أخف في الصعيد.</li>
+            <li><strong>طريقة الدمج:</strong> كل مكون لوحده أو مزج الكل.</li>
+            <li><strong>الإضافات:</strong> عصير ليمون أو ثوم أو شطة حسب الذوق.</li>
+          </ul>
+    
+          <h3>أهم خطوات التحضير:</h3>
+          <ul>
+            <li>سلق العدس، الأرز، والمكرونة بشكل منفصل.</li>
+            <li>تحضير الصلصة الغنية بالطماطم والثوم.</li>
+            <li>قلي البصل بشكل جاف ومقرمش.</li>
+            <li>دمج المكونات حسب الطريقة المطلوبة.</li>
+          </ul>
+    
+          <h3>أهم المكونات:</h3>
+          <ul>
+            <li>أرز</li>
+            <li>عدس</li>
+            <li>مكرونة</li>
+            <li>حمص</li>
+            <li>بصل مقلي</li>
+            <li>صلصة طماطم وثوم</li>
+          </ul>
+        `
+      },
+    
+      molokhia: {
+        title: 'ملوخية',
+        image: 'https://i.postimg.cc/jdNx1NLw/almlwkhyt.jpg',
+        description: `
+          <p>
+            الملوخية المصرية أكلة خضراء وصحية، تختلف من منطقة لأخرى.
+            في القاهرة تُطهى بسرعة مع مرق دجاج أو لحم، ويُضاف الثوم والكزبرة في الآخر.
+            في الصعيد تُحضر سميكة باستخدام الدقيق أو النشا، والنسخة المجمدة تستخدم للحفاظ على اللون.
+          </p>
+    
+          <h3>تلخيص الاختلافات:</h3>
+          <ul>
+            <li><strong>القاهرة:</strong> سلق سريع مع مرق، إضافة الثوم والكزبرة في الآخر.</li>
+            <li><strong>الصعيد:</strong> سميكة مع دقيق أو نشا.</li>
+            <li><strong>النسخة المجمدة:</strong> للحفاظ على اللون والنكهة.</li>
+            <li><strong>إضافات:</strong> عصير ليمون أو ثوم عند التقديم.</li>
+          </ul>
+    
+          <h3>أهم خطوات التحضير:</h3>
+          <ul>
+            <li>غسل وتقطيع أوراق الملوخية جيدًا.</li>
+            <li>سلق سريع في مرق دجاج أو لحم.</li>
+            <li>إضافة الثوم والكزبرة على نار هادئة.</li>
+            <li>تقديمها مع أرز ودجاج أو لحم.</li>
+          </ul>
+    
+          <h3>أهم المكونات:</h3>
+          <ul>
+            <li>أوراق ملوخية</li>
+            <li>مرق دجاج أو لحم</li>
+            <li>ثوم</li>
+            <li>كزبرة</li>
+            <li>أرز</li>
+            <li>دجاج أو لحم مسلوق</li>
+          </ul>
+        `
+      },
+    
+      kebda: {
+        title: 'كبدة إسكندراني',
+        image: 'https://i.postimg.cc/Jh7Rt2Ky/alkbdt-alaskndrany.jpg',
+        description: `
+          <p>
+            الكبدة الإسكندراني من أشهر أكلات الشارع المصري.
+            في الإسكندرية تُطهى مع الطماطم والفلفل والبصل، والتوابل مثل الكمون والكزبرة.
+            في القاهرة تكون أخف، والسر في طراوتها هو عدم الطهي الطويل.
+          </p>
+    
+          <h3>تلخيص الاختلافات:</h3>
+          <ul>
+            <li><strong>الإسكندرية:</strong> كبدة مع البصل والفلفل والطماطم، ثوم حار أحيانًا.</li>
+            <li><strong>القاهرة:</strong> نسخة أخف بالبهارات، تقدم مع خبز أو بطاطس.</li>
+            <li><strong>الطهي:</strong> قصير للحفاظ على الطراوة.</li>
+          </ul>
+    
+          <h3>أهم خطوات التحضير:</h3>
+          <ul>
+            <li>تقطيع الكبدة شرائح رقيقة.</li>
+            <li>تتبيلها بالبهارات والملح.</li>
+            <li>تحميرها مع البصل والفلفل والطماطم.</li>
+            <li>تقديمها ساخنة مع خبز أو بطاطس.</li>
+          </ul>
+    
+          <h3>أهم المكونات:</h3>
+          <ul>
+            <li>كبدة</li>
+            <li>بصل</li>
+            <li>طماطم</li>
+            <li>فلفل أخضر</li>
+            <li>توابل</li>
+            <li>عصير ليمون (اختياري)</li>
+          </ul>
+        `
+      },
+    
+      taamia: {
+        title: 'طعمية',
+        image: 'https://i.postimg.cc/bNYScmfn/tʿmyt.jpg',
+        description: `
+          <p>
+            الطعمية المصرية (الفلافل) أكلة شعبية شهيرة، تختلف من القاهرة للصعيد.
+            في القاهرة تكثر الأعشاب مثل البقدونس والشبت والكزبرة، وتُقلى في الزيت الساخن.
+            في الصعيد تُخبز أحيانًا في الفرن لتكون صحية أكثر.
+          </p>
+    
+          <h3>تلخيص الاختلافات:</h3>
+          <ul>
+            <li><strong>القاهرة:</strong> بقدونس وشبت وكزبرة بكثرة، تُقلى في الزيت.</li>
+            <li><strong>الصعيد:</strong> أقل أعشاب، ممكن تُخبز في الفرن.</li>
+            <li><strong>إضافات:</strong> حمص مطحون أو كزبرة جافة.</li>
+            <li><strong>طريقة القلي:</strong> سر القرمشة والطراوة.</li>
+          </ul>
+    
+          <h3>أهم خطوات التحضير:</h3>
+          <ul>
+            <li>نقع وطحن الفول المدشوش جيدًا.</li>
+            <li>إضافة الأعشاب والبهارات والبصل الأخضر والثوم.</li>
+            <li>تشكيل العجينة كرات أو أقراص.</li>
+            <li>القلي في زيت ساخن جدًا أو الخبز في الفرن.</li>
+          </ul>
+    
+          <h3>أهم المكونات:</h3>
+          <ul>
+            <li>فول مدشوش</li>
+            <li>بقدونس</li>
+            <li>كزبرة</li>
+            <li>شبت</li>
+            <li>بصل أخضر</li>
+            <li>ثوم</li>
+            <li>كمون</li>
+            <li>فلفل</li>
+            <li>زيت أو فرن</li>
+          </ul>
+        `
+      }
+    };
+    
+    function openRecipe(name) {
+  const recipe = recipes[name];
+  document.getElementById('recipe-title').textContent = recipe.title;
+  document.getElementById('recipe-image').src = recipe.image;
+  document.getElementById('recipe-description').innerHTML = recipe.description;
+  document.getElementById('fullscreen').classList.add('active');
+}
+
+function closeRecipe() {
+  document.getElementById('fullscreen').classList.remove('active');
+}
+
+
+const fullscreen = document.createElement('div');
+fullscreen.id = 'fullscreen';
+fullscreen.innerHTML = `
+  <div id="fullscreen-content">
+    <div id="fullscreen-close" onclick="closeRecipe()">&#8592;</div>
+    <h1 id="recipe-title"></h1>
+    <img id="recipe-image" />
+    <div id="recipe-description"></div>
+  </div>
+`;
+document.body.appendChild(fullscreen);
+
+
+const style = document.createElement('style');
+style.textContent = `
+#fullscreen {
+  display:none;
+  position:fixed;
+  top:0; left:0;
+  width:100vw;
+  height:100vh;
+  background:#fff;
+  z-index:9999;
+  overflow-y:auto;
+}
+#fullscreen.active { display:block; }
+#fullscreen-content{
+  max-width:900px;
+  margin:20px auto;
+  padding:20px;
+}
+#fullscreen-close{
+  position:fixed;
+  top:10px;
+  left:10px;
+  font-size:30px;
+  cursor:pointer;
+  z-index:10000;
+}
+`;
+document.head.appendChild(style);    </script>
+     <div id="logo-popup" onclick="hideLogoPopup()">
+  <img src="https://i.postimg.cc/rFdcr418/Egyptian-recipes.png" alt="Logo Popup">
+</div>
+
+
+<script>
+
+function showLogoPopup() {
+  document.getElementById('logo-popup').style.display = 'flex';
+}
+
+function hideLogoPopup() {
+  document.getElementById('logo-popup').style.display = 'none';
+}
+</script>
+</body>
+</html>

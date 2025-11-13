@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>الأكلات المصرية</title>
+<style>
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+        background-color: #f0f0f0;
+        color: #1a1a1a;
+    }
+
+    header{
+        color: #001f3f;
+        padding: 2rem;
+        padding-top: 5%;
+        animation: fadeDown 1s ease-out;
+        position: relative;
+        text-align: center;
+    }
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.logo-container img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+}
+
+.logo-container img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* تعديل CSS للـ logo popup */
+#logo-popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(255, 248, 240, 0.9); /* خلفية فاتحة */
+  justify-content: center;
+  align-items: center;
+  z-index: 100000; /* اعلى من أي fullscreen overlay */
+}
+
+#logo-popup img {
+  max-width: 80%;
+  max-height: 80%;
+  border-radius: 50%;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+  animation: zoomIn 0.4s ease;
+}
+
+@keyframes zoomIn {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+    section {
+        padding: 2rem;
+        background-color:white;
+        margin: 1rem auto;
+        max-width: 1000px;
+        border-radius: 8px;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeUp 0.8s ease forwards;
+        animation-delay: 0.3s;
+        display: flex;
+        flex-direction: row;
+        gap: 1.5rem;
+        align-items: flex-start;
+    }
+
+    h2{
+        color: #004080;
+        margin-top: 0;
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #1a2a6c;
+        padding-bottom: 0.5rem;
+    }
+
+    p{
+        line-height: 1.6;
+        text-align: justify;
+    }
+
+    .section-text {
+        flex: 2;
+    }
+
+    .section-image {
+        flex: 1;
+    }
+
+    .section-image img {
+        width: 100%;
+        border-radius: 8px;
+    }
+
+    .section-card {
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+    .section-card:hover {
+        transform: scale(1.02);
+    }
+
+    ul {
+        line-height: 1.7;
+        padding-left: 1.5rem;
+
+    }
+
+    a {
+      color: #001f3f;
+      text-decoration: none;
+    }
+
+.caption {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 5px;
+    }
+
+table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    th {
+      background-color: #003366;
+      color: #ffffffb1; /* أبيض فاتح */
+      padding: 12px;
+      border: 1px solid #f9f8f8;
+      text-align: left;
+    }
+
+   td {
+  padding: 12px;
+  border: 1px solid #010004c1;
+  color: #000000;
+  background-color: #f5f5f5; /* ← رمادي فاتح بدل الأبيض */
+}
+
+  th, td {
+    padding: 10px;
+    text-align: left;
+  }
+
+tr:nth-child(even) {
+  background-color: #e1e0e000; /* ← تدرج رمادي أفتح لتمييز الصفوف */
+}
+
+    @keyframes fadeUp {
+      0% {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeDown {
+      0% {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .table-section {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    url('https://cdn-icons-png.flaticon.com/512/857/857681.png'),   /* شوكة وسكين */
+    url('https://cdn-icons-png.flaticon.com/512/857/857681.png'),
+    url('https://cdn-icons-png.flaticon.com/512/857/857681.png'),
+    url('https://cdn-icons-png.flaticon.com/512/706/706195.png'),   /* قدر / طاجن */
+    url('https://cdn-icons-png.flaticon.com/512/706/706195.png'),
+    url('https://cdn-icons-png.flaticon.com/512/1046/1046857.png'), /* مقلاة */
+    url('https://cdn-icons-png.flaticon.com/512/1046/1046857.png'),
+    url('https://cdn-icons-png.flaticon.com/512/3208/3208666.png'), /* ملعقة خشب */
+    url('https://cdn-icons-png.flaticon.com/512/3208/3208666.png'),
+    url('https://cdn-icons-png.flaticon.com/512/1046/1046879.png'), /* إبريق شاي */
+    url('https://cdn-icons-png.flaticon.com/512/1046/1046879.png'),
+    url('https://cdn-icons-png.flaticon.com/512/1046/1046866.png'); /* سكين مطبخ */
+
+  background-repeat: repeat-y;
+  background-size: 60px 60px;
+
+  /* توزيع الأيقونات في أماكن منفصلة */
+  background-position:
+    5% 10%, 25% 20%, 45% 30%,
+    65% 15%, 85% 25%, 10% 60%,
+    30% 70%, 50% 80%, 70% 60%,
+    90% 75%, 40% 90%, 80% 90%;
+  
+  opacity: 0.08;
+  z-index: -1;
+  pointer-events: none;
+  animation: slowFloat 60s linear infinite alternate;
+}
+
+</style>    
+</head>
+<body>
+
+<header>
+    <div class="logo-container">
+        <img src="https://i.postimg.cc/wBqGhKCL/food-culture.jpg" alt="حضارات الطعام المصري"   onclick="showLogoPopup()">
+    </div>
+    <div class="caption">حضاران أكلات مصرية  </div>
+</header>
+
+<section >
+    <div class="section-text">
+        <h2> عالم الأكلات المصرية</h2>
+        <p>الأكل المصري هو واحد من أقدم المطابخ في العالم، جذوره راجعة لآلاف السنين، من عصر الفراعنة لحد النهارده.
+الفراعنة كانوا بيأكلوا أكلات بسيطة لكنها متكاملة: عيش، بصل، فول، عدس، خضار، وسمك من النيل. كانوا شايفين الأكل جزء من الروح — لدرجة إنهم كانوا بيحطوا الأكل مع الميت في المقابر!
+
+ولما جه العهد القبطي، دخل الصيام النباتي بقوة، فظهرت أكلات زي الفول والطعمية والبصارة. المصريين عرفوا إزاي يبدعوا في الأكل النباتي ويخلوه لذيذ ومغذي.
+أما في العهد الإسلامي والعثماني، فدخلت أكلات جديدة زي المحشي والفتة والحلويات الشرقية. المصريين كالعادة مصّروها على طريقتهم وأضافوا نكهات محلية — ثوم، كسبرة، شبت، وطشة سمنة بلدي.
+وفي القرن العشرين، المطبخ المصري بقى مزيج من الريف والمدينة، من التراث والمعاصرة. من الفلاح اللي بيغمس عيشه في طبق ملوخية، لحد المطاعم اللي بتقدّم كشري ج gourmet في المهندسين 
+
+ثقافة الأكل عند المصريين مش بس طعم — دي عاطفة، اجتماع، كرم، وانتماء.
+اللمة حوالين السفرة، “الطشة”، “الريحة اللي بتفوق الحي الميت”، دي كلها رموز للحياة المصرية.
+كل أكلة مصرية ليها حكاية، وورا كل حكاية في جزء من روح البلد.</p>
+    </div>
+</section>
+
+<section >
+    <div class="section-text">
+        <h2>الأكل في العهد الفرعوني</h2>
+        <p>المصري القديم كان عبقري في الزراعة، وده انعكس على أكلاته.
+كان بيعتمد على النيل في الصيد، وعلى الأراضي الخصبة لزراعة القمح والشعير والفول والعدس.
+الأكل وقتها كان طبيعي جدًا، من غير دهون صناعية ولا تعقيدات — كل حاجة طازة وعضوية.
+العيش البلدي أصله فرعوني، والعدس والفول كانوا غذاء الفلاحين والجنود.
+كانوا بيقدّسوا الأكل كرمز للحياة والاستمرارية، حتى في العالم الآخر.</p>
+    </div>
+    <div class="section-image">
+        <img src="https://i.postimg.cc/hj0wmyYQ/alhdart-alfrʿwnyt.jpg" alt="الأكل في العهد الفرعوني
+">
+    </div>
+</section>
+
+<section>
+    <div class="section-text">
+        <h2>الأكل في العهد القبطي (المسيحي القديم)</h2>
+        <p>الصيامات الطويلة خلت المصريين المسيحيين يبتكروا أكلات نباتية غنية.
+ظهر الفول والطعمية والبصارة كبديل للبروتين الحيواني.
+استخدموا الأعشاب والتوابل (زي الشبت والبقدونس) لتعويض النكهة.
+الثقافة هنا كانت قائمة على “التوازن” بين الروح والجسد، فالأكل وسيلة للنقاء مش بس للشبع.
+من هنا اتأسس جزء كبير من المطبخ المصري النباتي اللي مازال لحد النهاردة.</p>
+    </div>
+    <div class="section-image">
+        <img src="https://i.postimg.cc/Fz8xk0h3/alhdart-alqbtyt.jpg" alt="الأكل في العهد القبطي"
+>
+    </div>
+</section>
+
+<section>
+    <div class="section-text">
+        <h2>الأكل في العهد الإسلامي والعثماني</h2>
+        <p>مع دخول الإسلام، الأكل بقى فيه روح الاحتفال والمشاركة.
+رمضان دخل مفهوم "العزومات" و"اللمة" و"الحلو بعد الفطار".
+ومن العثمانيين جت أكلات زي المحشي، الفتة، الكنافة، القطايف.
+لكن المصريين ما بياخدوش حاجة زي ما هي — بيضيفوا “الطشة”، “الشطة”، “السمنة البلدي”، وبيخلوا الأكل غني بالنكهة والمشاعر.
+ده العصر اللي اتشكل فيه المطبخ المصري اللي نعرفه النهارده تقريبًا.</p>
+    </div>
+    <div class="section-image">
+        <img src="https://i.postimg.cc/mkvQgRSc/alakl-fy-alhdart-alaslamyt.jpg" alt="الأكل في العهد الإسلامي و العثماني
+">
+    </div>
+</section>
+
+<section>
+    <div class="section-text">
+        <h2>الأكل في مصر الحديثة والمعاصرة</h2>
+        <p>دلوقتي بقى في خليط بين القديم والجديد.
+الكشري مثلًا جمع العدس (من الفراعنة) والمكرونة (من الإيطاليين) والطماطم (من العثمانيين)، وبقى أكلة قومية.
+الملوخية اتعملت بطرق مبتكرة، الفتة اتطورت، وحتى الفول بقى له ساندوتش “فاست فود” في كل شارع.
+ثقافة الأكل المصري النهارده بتجمع بين الأصالة والتطور — من عربية فول للريستو كافيه.
+بس يفضل جوهرها ثابت: اللمة، الطعم، والكرم.</p>
+    </div>
+    <div class="section-image">
+        <img src="https://i.postimg.cc/PxNZbN31/alakl-fy-alʿsr-alhdyth.jpg" alt="الأكل في مصر الحديثة 
+">
+    </div>
+</section>
+
+<div style="overflow-x:auto;">
+  <section class="table-section">
+    <h2>تطور المطبخ المصري عبر العصور</h2>
+    <p>الجدول بيوضح بشكل منظم رحلة المطبخ المصري عبر العصور المختلفة، وإزاي الأكل في مصر كان دايمًا انعكاس للحياة الاجتماعية والسياسية والدينية في كل فترة.
+في العهد الفرعوني، كانت الحياة بسيطة ومعتمدة على الزراعة، فكان الأكل نباتي وطبيعي جدًا — العيش، الفول، العدس، والسمك من النيل كانوا أساس الغذاء. وده بيعبّر عن احترام المصري القديم للطبيعة والإنتاج الأرضي.
+بعد كده، في العهد القبطي، الأكل أخد طابع روحاني أكتر بسبب الصيامات الطويلة، فظهرت أكلات نباتية غنية زي البصارة والفول المطبوخ، وده خلّى المطبخ المصري يتميز بتنوعه النباتي لحد النهارده.
+لما دخل العهد الإسلامي والعثماني، المطبخ المصري اتفتح على مطابخ تانية، ودخلت أكلات زي المحشي والفتة والحلويات الشرقية، بس المصريين ضافوا عليها “الطشة”، وبهاراتهم الخفيفة، وسمنهم البلدي، فبقت ليها روح مختلفة تمامًا.
+وفي مصر الحديثة، الأكل بقى مزيج بين القديم والجديد — الكشري مثلًا جمع عناصر فرعونية وإيطالية وعثمانية، وبقى أكلة قومية بامتياز. المصريين عرفوا يطوّروا أكلهم من غير ما يفقدوا هويّتهم.
+بالتالي، المطبخ المصري مش مجرد وصفات، لكنه تاريخ حيّ بيتنفس — بيحكي عن الزراعة، والدين، والاحتلال، والعادات، واللمة، وكل ما يمثّل روح مصر عبر العصور.</p>
+   <table  cellpadding="10" cellspacing="0">
+  <thead>
+    <tr>
+      <th>الحقبة</th>
+      <th>السمات الأساسية</th>
+      <th>أشهر الأكلات</th>
+      <th>الطابع الثقافي</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong> الفرعونية</strong></td>
+      <td>طبيعية، نباتية، معتمدة على الزراعة</td>
+      <td>العيش، العدس، الفول، السمك</td>
+      <td>التقديس للحياة والغذاء</td>
+    </tr>
+    <tr>
+      <td><strong>القبطية</strong></td>
+      <td>نباتية بسبب الصيامات الطويلة</td>
+      <td>البصارة، الفول، الخضار المطبوخ</td>
+      <td>التوازن الروحي والصحي</td>
+    </tr>
+    <tr>
+      <td><strong>الإسلامية / العثمانية</strong></td>
+      <td>متنوعة وغنية بالنكهات</td>
+<td> المحشي، الفتة، الكنافة، الملوخية </td>
+                    <td> الكرم والعزومات </td>
+
+    </tr>
+    <tr>
+  <td><strong>الحديثة</strong></td>
+                    <td>دمج بين القديم والجديد</td>
+                    <td>الكشري، الطعمية، المحشي الخفيف</td>
+                    <td>الأصالة والتجديد</td>
+  </tr>
+  </tbody>
+</table>
+
+  </section>
+  </div>
+
+  <section class="table-section">
+    <h2>ملامح الثقافة الغذائية المصرية</h2>
+    <ul>
+        <li>الأكل عند المصريين حدث اجتماعي مش فردي — لازم لمة.</li>
+        <li>المصري بيقدّر ريحة الأكل قبل طعمه (الطشة والبهارات عنصر رئيسي).</li>
+        <li>الأكلات المصرية دايمًا متوازنة بين الكربوهيدرات والخضار والبروتين النباتي.</li>
+        <li>الاعتماد على الأكلات الموسمية (زي الملوخية صيفًا، العدس شتاءً).</li>
+        <li>الأم المصرية هي قلب المطبخ: سر النكهة وسحر المذاق.</li>
+        <li>الأكل وسيلة للتعبير عن الفرح، الحزن، الكرم، والعيلة.</li>
+        <li>العيش البلدي مش مجرد خبز، ده رمز للحياة نفسها.</li>
+        <li>البهارات المصرية دايمًا خفيفة — تدي نكهة من غير ما تطغى.</li>
+        <li>المصري بيعشق المزج بين الحلو والحدّق في بعض الأكلات (زي الكشري بالشطة).</li>
+        <li>المطبخ المصري بيحترم الطبيعة: “ما فيش حاجة بتترمي”، كل حاجة ليها استخدام.</li>
+    </ul>
+  </section>
+
+  <section class="table-section">
+    <h2>العلاقة بين الأكل والحضارة المصرية</h2>
+    <ul>
+        <li>في <strong>المقابر الفرعونية،</strong> اتوجدت بقايا طعام متحنطة مع الموتى → دليل على قدسية الأكل.</li>
+        <li>في <strong>الموالد والمناسبات الدينية،</strong>كل مناسبة ليها أكلة رمزية (زي الفتة في العيد، والقطايف في رمضان).</li>
+        <li>في <strong>الثقافة الشعبية،</strong> الأمثال كتير عن الأكل:</li>
+        <ul>
+            <li>“اللي ياكل لوحده يزور”</li>
+            <li>“كلوا واستمتعوا، الدنيا يومين”</li>
+        </ul>
+        <li><strong>المطبخ المصري مرآة للتاريخ السياسي:</strong>كل احتلال كان بيسيب أثره في طبق.</li>
+        <li><strong>الكرم المصري</strong>متمثل في السفرة العامرة، حتى لو بسيطة.</li>
+    </ul>
+  </section>
+
+   <div id="logo-popup" onclick="hideLogoPopup()">
+  <img src="https://i.postimg.cc/wBqGhKCL/food-culture.jpg" alt="Logo Popup">
+</div>
+
+<script>
+
+function showLogoPopup() {
+  document.getElementById('logo-popup').style.display = 'flex';
+}
+
+function hideLogoPopup() {
+  document.getElementById('logo-popup').style.display = 'none';
+}
+</script>
+</body>
+</html>
